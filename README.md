@@ -1,5 +1,7 @@
 # 实验室成果评价 | Research Evaluation
 
+view this website:  https://junyingwang959.github.io/Lab-Achievement-Eval/#/overview
+
 ## English
 
 A research evaluation dashboard for reviewing laboratory tasks, research outcomes, and resource use, with a complete submission and evaluation workflow.
