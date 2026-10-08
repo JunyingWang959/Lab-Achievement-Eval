@@ -28,7 +28,7 @@ def nav(key, url, title, icon):
     svg = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">' + icons[icon] + '</svg>'
     return f'<a class="nav-link" data-nav="{key}" href="#/{url}">{svg}{title}</a>'
 
-report_nav = nav('overview', 'overview', '中心评价总览', 'overview') + nav('featured', 'case-study', '关键案例 · 建设方案', 'file')
+report_nav = nav('overview', 'overview', '中心评价总览', 'overview')
 work_nav = nav('workbench', 'workspace', '填报与评测入口', 'table')
 
 html = '<!DOCTYPE html>\n<!-- Third-party notice: JSZip\n' + vendor_license + '\n-->\n' + '''

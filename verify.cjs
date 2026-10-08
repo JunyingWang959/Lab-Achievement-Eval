@@ -51,13 +51,14 @@ const overview=run('presentationHtml(leaderOverview())');
 assert.equal((overview.match(/class="center-card"/g)||[]).length,3);
 assert.equal((overview.match(/href=/g)||[]).length,3,'总览仅通过三张中心卡片进入详情');
 assert(!overview.includes('催化材料')&&!overview.includes('embedded-rules'));
-for(const alias of ['tasks','outcomes']){ctx.location.hash='#'+alias;run('renderLegacy()');assert.equal(main.innerHTML,overview);}
+for(const alias of ['tasks','outcomes','featured','/case-study']){ctx.location.hash='#'+alias;run('renderLegacy()');assert.equal(main.innerHTML,overview);}
 assert(run("centerPage('agent').includes('href=\"#comparison\"')"),'优差案例仍可进入');
-assert(run("featuredPage().includes('人力投入及说明') && featuredPage().includes('Context')"));
+assert.equal((overview.match(/pill blue\">良</g)||[]).length,3,'三个中心汇报评级统一为良');
+for(const id of run('CENTERS.map(c=>c.id)'))assert(run(`centerPage('${id}').includes('中心评级：良')`));
 const html=fs.readFileSync(fs.existsSync(__dirname+'/index.html')?__dirname+'/index.html':__dirname+'/dist/index.html','utf8');
 assert.ok(!/<script[^>]+src=/.test(html));assert.ok(!/<link[^>]+rel="stylesheet"/.test(html));
 assert.ok(!/fetch\(|XMLHttpRequest|https?:\/\/.*\.(js|css)["']/.test(html));
-assert.deepEqual([...html.matchAll(/data-nav="([^"]+)"/g)].map(m=>m[1]),['overview','featured','workbench']);
+assert.deepEqual([...html.matchAll(/data-nav="([^"]+)"/g)].map(m=>m[1]),['overview','workbench']);
 ctx.localStorage={getItem:()=>null,setItem:()=>{}};
 ctx.document.getElementById=()=>null;
 vm.runInContext(['workflow-model.js','workflow-ui.js','workflow-controller.js'].map(f=>fs.readFileSync(__dirname+'/src/'+f,'utf8')).join('\n'),ctx);
@@ -76,6 +77,8 @@ for(const route of [...routes,...workflowRoutes]){
   assert(main.innerHTML.length>500,canonical);
   const visible=main.innerHTML.replace(/<[^>]*>/g,'');
   assert(!/模拟|演示|v0\.4|展示编制|阶段轨迹为。/.test(visible),canonical);
+  assert(!/关键案例|建设方案/.test(visible),canonical);
+  assert(!/href="#[^"]*(?:featured|case-study)/.test(main.innerHTML),canonical);
   for(const link of main.innerHTML.matchAll(/href="(#[^"]*)"/g))assert(/^#\/[a-z0-9/-]+$/.test(link[1]),canonical+' '+link[1]);
 }
 run("const legacyPreset=makeDemo('tasks','task');legacyPreset.title='旧评价（演示）';legacyPreset.report={status:'差（模拟）'};");

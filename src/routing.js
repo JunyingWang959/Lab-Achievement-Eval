@@ -7,7 +7,7 @@ function routePart(hash=location.hash){
   if(p[0]==='tasks'&&p[1]&&!['input','rules','run'].includes(p[1]))return ['task',...p.slice(1)];
   if(p[0]==='outcomes'&&p[1]&&!['input','rules','run'].includes(p[1]))return ['outcome',...p.slice(1)];
   if(p[0]==='cases')return ['case',...p.slice(1)];
-  if(p[0]==='case-study')return ['featured'];
+  if(['case-study','featured'].includes(p[0]))return ['overview'];
   if(p[0]==='reports')return [p[1]==='tasks'?'task-report':'outcome-report'];
   return p;
 }
@@ -18,7 +18,6 @@ function routeHref(route){
   else if(name==='task')path=['tasks',...tail];
   else if(name==='outcome')path=['outcomes',...tail];
   else if(name==='case')path=['cases',...tail];
-  else if(name==='featured')path=['case-study'];
   else if(name==='workbench')path=['workspace',...tail];
   else if(name==='intake')path=['workspace','intake',...tail];
   else if(['tasks','outcomes'].includes(name))path=tail.length?['workspace',name,...tail]:['overview'];
